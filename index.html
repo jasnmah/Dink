@@ -1,16 +1,237 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pickleball Park App</title>
-    <meta property="og:image" content="https://bolt.new/static/og_default.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://bolt.new/static/og_default.png" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dink 🏓</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --green: #1D9E75; --green-dark: #0F6E56; --green-light: #E1F5EE; --green-text: #085041;
+    --coral: #D85A30; --coral-light: #FAECE7; --amber: #EF9F27;
+    --bg: #F8F9FA; --surface: #FFFFFF; --border: rgba(0,0,0,0.08);
+    --text: #1A1A1A; --muted: #6B7280; --radius: 14px; --radius-sm: 8px;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+  .app { width: 100%; max-width: 430px; min-height: 100vh; background: var(--surface); display: flex; flex-direction: column; position: relative; }
+  .screen { display: none; flex-direction: column; flex: 1; padding-bottom: 80px; overflow-y: auto; }
+  .screen.active { display: flex; }
+  .header { background: var(--green); padding: 52px 20px 20px; color: white; flex-shrink: 0; }
+  .header-park { font-size: 12px; opacity: 0.8; margin-bottom: 6px; }
+  .header h1 { font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .header p { font-size: 14px; opacity: 0.85; margin-top: 4px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 12px 16px 0; }
+  .card-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+  .stats-row { display: flex; gap: 8px; }
+  .stat { flex: 1; background: var(--bg); border-radius: var(--radius-sm); padding: 12px 8px; text-align: center; }
+  .stat-val { font-size: 24px; font-weight: 600; color: var(--green); font-family: 'DM Mono', monospace; }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .insight { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .insight:last-child { border-bottom: none; padding-bottom: 0; }
+  .insight-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .big-btn { margin: 16px; padding: 16px; background: var(--green); color: white; border: none; border-radius: var(--radius); font-size: 17px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; width: calc(100% - 32px); transition: background 0.15s, transform 0.1s; }
+  .big-btn:active { background: var(--green-dark); transform: scale(0.98); }
+  .form-group { margin: 12px 16px 0; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-control { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--text); transition: border-color 0.15s; appearance: none; }
+  .form-control:focus { outline: none; border-color: var(--green); }
+  select.form-control { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .score-row { display: flex; align-items: center; gap: 10px; }
+  .score-row .form-control { text-align: center; font-size: 22px; font-weight: 600; font-family: 'DM Mono', monospace; padding: 14px 8px; }
+  .score-sep { color: var(--muted); font-size: 18px; flex-shrink: 0; }
+  .success-toast { margin: 12px 16px 0; padding: 14px 16px; background: var(--green-light); border-radius: var(--radius-sm); color: var(--green-text); font-size: 14px; font-weight: 500; display: none; border-left: 3px solid var(--green); }
+  .game-item { display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .game-item:last-child { border-bottom: none; }
+  .game-vs { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .badge { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .badge-win { background: var(--green-light); color: var(--green-text); }
+  .badge-loss { background: var(--coral-light); color: var(--coral); }
+  .lb-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .lb-item:last-child { border-bottom: none; }
+  .lb-item.you { background: var(--green-light); margin: 0 -16px; padding: 12px 16px; }
+  .lb-rank { width: 24px; font-size: 13px; font-weight: 600; color: var(--muted); text-align: center; flex-shrink: 0; }
+  .lb-rank.gold { color: var(--amber); }
+  .lb-rank.silver { color: #888780; }
+  .lb-rank.bronze { color: var(--coral); }
+  .lb-name { flex: 1; font-size: 15px; font-weight: 500; }
+  .lb-streak { font-size: 11px; color: var(--green); font-weight: 600; }
+  .lb-right { text-align: right; }
+  .lb-pct { font-size: 16px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .lb-games { font-size: 11px; color: var(--muted); }
+  .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; display: flex; background: var(--surface); border-top: 1px solid var(--border); z-index: 100; }
+  .nav-btn { flex: 1; padding: 10px 4px 8px; background: none; border: none; cursor: pointer; font-size: 10px; font-family: 'DM Sans', sans-serif; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 4px; transition: color 0.15s; font-weight: 500; }
+  .nav-btn.active { color: var(--green); }
+  .nav-btn svg { width: 22px; height: 22px; }
+  #onboarding { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; text-align: center; }
+  .dink-logo-title { font-size: 52px; font-weight: 600; color: var(--green); margin-bottom: 8px; }
+  .dink-logo-sub { font-size: 16px; color: var(--muted); margin-bottom: 40px; }
+  .onboard-input { width: 100%; padding: 16px 18px; border: 2px solid var(--border); border-radius: var(--radius); font-size: 17px; font-family: 'DM Sans', sans-serif; text-align: center; margin-bottom: 12px; transition: border-color 0.15s; }
+  .onboard-input:focus { outline: none; border-color: var(--green); }
+  .onboard-btn { width: 100%; padding: 16px; background: var(--green); color: white; border: none; border-radius: var(--radius); font-size: 17px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+  .onboard-note { font-size: 13px; color: var(--muted); margin-top: 12px; }
+  .highlight-stat { font-size: 13px; color: var(--green-text); background: var(--green-light); padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="onboarding">
+  <div class="dink-logo-title">Dink</div>
+  <div class="dink-logo-sub">Your local pickleball leaderboard</div>
+  <input class="onboard-input" id="username-input" type="text" placeholder="Enter your name" maxlength="20" />
+  <select class="onboard-input" id="park-select" style="margin-bottom:16px;">
+    <option value="">Select your home park</option>
+    <option>Hayward Memorial Park</option>
+    <option>Manor Park</option>
+    <option>Oakland Pickleball Courts</option>
+    <option>San Jose Discovery Meadow</option>
+  </select>
+  <button class="onboard-btn" onclick="startApp()">Let's play →</button>
+  <div class="onboard-note">No account needed. Just your name.</div>
+</div>
+<div class="app" id="app" style="display:none;">
+  <div class="screen active" id="screen-home">
+    <div class="header">
+      <div class="header-park">📍 <span id="home-park">Hayward Memorial Park</span></div>
+      <h1>Hey, <span id="home-name">Player</span>! 👋</h1>
+      <p>You're ranked <strong>#<span id="home-rank">3</span></strong> this week</p>
+    </div>
+    <div class="card">
+      <div class="card-title">This week</div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-val">68%</div><div class="stat-lbl">Win rate</div></div>
+        <div class="stat"><div class="stat-val">W3</div><div class="stat-lbl">Streak</div></div>
+        <div class="stat"><div class="stat-val">11</div><div class="stat-lbl">Games</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Insights</div>
+      <div class="insight"><div class="insight-icon">🏆</div><div>You win <span class="highlight-stat">74%</span> playing with Kevin</div></div>
+      <div class="insight"><div class="insight-icon">⚔️</div><div>You're <span class="highlight-stat">5-2</span> vs Mike this week</div></div>
+      <div class="insight"><div class="insight-icon">🔥</div><div>On a 3-game win streak — keep it up!</div></div>
+    </div>
+    <button class="big-btn" onclick="showScreen('log')">+ Log a Game</button>
+  </div>
+  <div class="screen" id="screen-log">
+    <div class="header"><h1>Log a game</h1><p>Takes under 10 seconds</p></div>
+    <div class="form-group"><label class="form-label">Park</label>
+      <select class="form-control" id="log-park">
+        <option>Hayward Memorial Park</option><option>Manor Park</option><option>Oakland Pickleball Courts</option><option>San Jose Discovery Meadow</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Your partner</label>
+      <select class="form-control" id="log-partner">
+        <option>Kevin</option><option>Sarah</option><option>Marcus</option><option>Priya</option><option>Jordan</option><option>Alex</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Opponent 1</label>
+      <select class="form-control" id="log-opp1">
+        <option>Mike</option><option>Jordan</option><option>Alex</option><option>Casey</option><option>Sam</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Opponent 2</label>
+      <select class="form-control" id="log-opp2">
+        <option>Jordan</option><option>Mike</option><option>Alex</option><option>Casey</option><option>Sam</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Score — Your team vs their team</label>
+      <div class="score-row">
+        <input class="form-control" type="number" id="score-us" placeholder="11" min="0" max="21">
+        <div class="score-sep">—</div>
+        <input class="form-control" type="number" id="score-them" placeholder="8" min="0" max="21">
+      </div>
+    </div>
+    <div class="success-toast" id="toast"></div>
+    <button class="big-btn" onclick="saveGame()">Save Game ✓</button>
+  </div>
+  <div class="screen" id="screen-stats">
+    <div class="header"><h1>Your stats</h1><p>Last 10 games</p></div>
+    <div class="card">
+      <div class="card-title">Recent games</div>
+      <div class="game-item"><div><div style="font-weight:500;">with Kevin</div><div class="game-vs">vs Mike & Jordan · Hayward</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:13px;">11–7</span><span class="badge badge-win">W</span></div></div>
+      <div class="game-item"><div><div style="font-weight:500;">with Sarah</div><div class="game-vs">vs Alex & Casey · Manor Park</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:13px;">8–11</span><span class="badge badge-loss">L</span></div></div>
+      <div class="game-item"><div><div style="font-weight:500;">with Kevin</div><div class="game-vs">vs Mike & Casey · Hayward</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:13px;">11–9</span><span class="badge badge-win">W</span></div></div>
+      <div class="game-item"><div><div style="font-weight:500;">with Marcus</div><div class="game-vs">vs Jordan & Alex · Hayward</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:13px;">11–6</span><span class="badge badge-win">W</span></div></div>
+      <div class="game-item"><div><div style="font-weight:500;">with Priya</div><div class="game-vs">vs Mike & Jordan · Manor Park</div></div><div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:13px;">9–11</span><span class="badge badge-loss">L</span></div></div>
+    </div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">Highlights</div>
+      <div class="insight"><div class="insight-icon">🤝</div><div>Best partner: <strong>Kevin</strong> — <span class="highlight-stat">74% win rate</span></div></div>
+      <div class="insight"><div class="insight-icon">😤</div><div>Toughest opponent: <strong>Alex</strong> — 3–5 record</div></div>
+      <div class="insight"><div class="insight-icon">📍</div><div>Best park: <strong>Manor Park</strong> — <span class="highlight-stat">80%</span></div></div>
+    </div>
+  </div>
+  <div class="screen" id="screen-leaderboard">
+    <div class="header"><h1>Leaderboard</h1><p id="lb-park-label">Hayward Memorial Park · This week</p></div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-title">Top players · min 5 games to qualify</div>
+      <div class="lb-item"><div class="lb-rank gold">1</div><div class="lb-name">Kevin <span class="lb-streak">🔥 W5</span></div><div class="lb-right"><div class="lb-pct">82%</div><div class="lb-games">9 games · 7–2</div></div></div>
+      <div class="lb-item"><div class="lb-rank silver">2</div><div class="lb-name">Sarah</div><div class="lb-right"><div class="lb-pct">75%</div><div class="lb-games">8 games · 6–2</div></div></div>
+      <div class="lb-item you"><div class="lb-rank bronze">3</div><div class="lb-name"><span id="lb-you-name">You</span> <span class="lb-streak">🔥 W3</span></div><div class="lb-right"><div class="lb-pct">68%</div><div class="lb-games">11 games · 7–4</div></div></div>
+      <div class="lb-item"><div class="lb-rank">4</div><div class="lb-name">Mike</div><div class="lb-right"><div class="lb-pct">60%</div><div class="lb-games">10 games · 6–4</div></div></div>
+      <div class="lb-item"><div class="lb-rank">5</div><div class="lb-name">Jordan</div><div class="lb-right"><div class="lb-pct">50%</div><div class="lb-games">6 games · 3–3</div></div></div>
+      <div class="lb-item"><div class="lb-rank">6</div><div class="lb-name">Casey</div><div class="lb-right"><div class="lb-pct">40%</div><div class="lb-games">5 games · 2–3</div></div></div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" id="nav-home" onclick="showScreen('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+    </button>
+    <button class="nav-btn" id="nav-log" onclick="showScreen('log')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Log Game
+    </button>
+    <button class="nav-btn" id="nav-stats" onclick="showScreen('stats')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Stats
+    </button>
+    <button class="nav-btn" id="nav-leaderboard" onclick="showScreen('leaderboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Leaderboard
+    </button>
+  </nav>
+</div>
+<script>
+  let currentUser = '', currentPark = '';
+  function startApp() {
+    const name = document.getElementById('username-input').value.trim();
+    const park = document.getElementById('park-select').value;
+    if (!name) { alert('Please enter your name!'); return; }
+    if (!park) { alert('Please select your home park!'); return; }
+    currentUser = name; currentPark = park;
+    localStorage.setItem('dink-name', name);
+    localStorage.setItem('dink-park', park);
+    document.getElementById('onboarding').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    document.getElementById('home-name').textContent = name;
+    document.getElementById('home-park').textContent = park;
+    document.getElementById('lb-park-label').textContent = park + ' · This week';
+    document.getElementById('lb-you-name').textContent = name + ' (you)';
+    document.getElementById('log-park').value = park;
+  }
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    document.getElementById('screen-' + name).scrollTop = 0;
+  }
+  function saveGame() {
+    const us = document.getElementById('score-us').value;
+    const them = document.getElementById('score-them').value;
+    const opp1 = document.getElementById('log-opp1').value;
+    const partner = document.getElementById('log-partner').value;
+    if (!us || !them) { alert('Please enter the score!'); return; }
+    const won = parseInt(us) > parseInt(them);
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    if (won) { toast.textContent = '🎉 Win logged! Great game with ' + partner + '!'; toast.style.background = 'var(--green-light)'; toast.style.color = 'var(--green-text)'; toast.style.borderLeftColor = 'var(--green)'; }
+    else { toast.textContent = '💪 Loss logged. You\'ll get ' + opp1 + ' next time!'; toast.style.background = 'var(--coral-light)'; toast.style.color = 'var(--coral)'; toast.style.borderLeftColor = 'var(--coral)'; }
+    document.getElementById('score-us').value = '';
+    document.getElementById('score-them').value = '';
+    setTimeout(() => { toast.style.display = 'none'; showScreen('home'); }, 2500);
+  }
+  window.onload = function() {
+    const savedName = localStorage.getItem('dink-name');
+    const savedPark = localStorage.getItem('dink-park');
+    if (savedName && savedPark) { document.getElementById('username-input').value = savedName; document.getElementById('park-select').value = savedPark; startApp(); }
+  };
+</script>
+</body>
 </html>
