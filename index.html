@@ -406,7 +406,7 @@
     </div>
     <div class="sec-head"><div class="sec-title">Nearby demos</div><div id="search-count" class="sec-sub">Sorted by distance</div></div>
     <div id="cards-container">
-    <div class="a-card hot" onclick="openPanel(0)">
+    <div class="a-card hot" onclick="openPanel(0)" data-brand="ronbus" data-status="live">
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
@@ -428,7 +428,7 @@
       </div>
     </div>
  
-    <div class="a-card" onclick="openPanel(1)">
+    <div class="a-card" onclick="openPanel(1)" data-brand="selkirk" data-status="today">
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
@@ -444,7 +444,7 @@
       </div>
     </div>
  
-    <div class="a-card" onclick="openPanel(2)">
+    <div class="a-card" onclick="openPanel(2)" data-brand="joola" data-status="live">
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
@@ -460,7 +460,7 @@
       </div>
     </div>
  
-    <div class="a-card" onclick="openPanel(3)">
+    <div class="a-card" onclick="openPanel(3)" data-brand="engage" data-status="upcoming">
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
@@ -1132,8 +1132,29 @@ document.querySelectorAll('.pill').forEach(p => {
   p.addEventListener('click', function() {
     document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
     this.classList.add('active');
+    filterCards(this.textContent.trim());
   });
 });
+ 
+function filterCards(filter) {
+  const cards = document.querySelectorAll('#cards-container .a-card');
+  let visible = 0;
+  cards.forEach(card => {
+    const brand = card.dataset.brand || '';
+    const status = card.dataset.status || '';
+    let show = false;
+    if (filter === 'All') show = true;
+    else if (filter === 'Available Now') show = status === 'live';
+    else show = brand === filter.toLowerCase();
+    card.style.display = show ? 'block' : 'none';
+    if (show) visible++;
+  });
+  const noResults = document.getElementById('no-results');
+  if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  const counter = document.getElementById('search-count');
+  if (counter) counter.textContent = filter === 'All' ? 'Sorted by distance' : `${visible} result${visible !== 1 ? 's' : ''} for "${filter}"`;
+  document.getElementById('search-input').value = '';
+}
  
 // Map rendered as inline SVG — no external dependencies
 document.querySelectorAll('.brand-pill').forEach(p => {
