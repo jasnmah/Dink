@@ -141,6 +141,8 @@
   .s-park { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 2px; }
   .live-badge { background: var(--green); color: white; font-size: 10px; font-weight: 800; font-family: 'Barlow', sans-serif; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; flex-shrink: 0; }
   .blink-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: blink 1.5s infinite; }
+  .s-interested-btn { padding: 6px 12px; background: var(--gray); border: 1.5px solid var(--gray2); border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.15s; color: var(--text); }
+  .s-interested-btn.active { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
   @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.3} }
  
   /* Profile screen */
@@ -168,7 +170,7 @@
   .panel-lbl { font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 7px; margin-top: 14px; }
   .panel-bio { font-size: 13px; color: var(--muted); line-height: 1.6; }
   .panel-sched { display: flex; align-items: center; gap: 10px; padding: 9px 11px; background: var(--gray); border-radius: var(--radius-sm); margin-bottom: 5px; }
-  .panel-sched-day { font-weight: 700; font-size: 12px; width: 56px; font-family: 'Barlow', sans-serif; text-transform: uppercase; }
+  .panel-sched-day { font-weight: 700; font-size: 11px; width: 70px; font-family: 'Barlow', sans-serif; text-transform: uppercase; line-height: 1.3; }
   .panel-sched-time { font-size: 12px; color: var(--muted); }
   .panel-sched-park { font-size: 11px; color: var(--green); font-weight: 600; margin-left: auto; }
   .go-btn { width: 100%; padding: 15px; background: var(--green); color: white; border: none; border-radius: var(--radius-pill); font-size: 15px; font-weight: 900; font-family: 'Barlow', sans-serif; cursor: pointer; text-transform: uppercase; margin-top: 14px; }
@@ -221,6 +223,7 @@
   .sess-detail { flex: 1; }
   .sess-main { font-weight: 600; font-size: 13px; }
   .sess-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .sess-sub + .sess-sub { font-size: 10px; color: var(--gray3); margin-top: 1px; }
   .del-btn { width: 28px; height: 28px; border-radius: 8px; border: none; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .del-btn svg { width: 13px; height: 13px; stroke: var(--red); }
  
@@ -410,7 +413,7 @@
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
-          <div class="av" style="background:#00A86B;"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Kevin" onerror="this.style.display='none'"/>KM</div>
+          <div class="av" style="background:#00A86B;">KM</div>
           <div class="a-info">
             <div style="display:flex;align-items:center;gap:7px;margin-bottom:2px;"><div class="a-name">Kevin Martinez</div><div class="hot-badge">Live</div></div>
             <div class="a-meta">Ronbus · ⭐ 4.9 · 142 demos</div>
@@ -421,7 +424,7 @@
         <div class="a-foot">
           <div style="display:flex;flex-direction:column;gap:3px;">
             <div class="status"><div class="dot dot-g"></div>Live now · here until 7pm</div>
-            <div style="font-size:11px;color:var(--muted);">🏓 5 paddles · 💬 Text available</div>
+            <div style="font-size:11px;color:var(--muted);" id="card-int-0">🏓 5 paddles · 👋 <span id="card-int-count-0">0</span> interested</div>
           </div>
           <button class="cta cta-dark" onclick="event.stopPropagation();openPanel(0)">Go Now →</button>
         </div>
@@ -432,7 +435,7 @@
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
-          <div class="av" style="background:#1E6FD9;"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah" onerror="this.style.display='none'"/>SR</div>
+          <div class="av" style="background:#1E6FD9;">SR</div>
           <div class="a-info">
             <div class="a-name">Sarah Rhodes</div>
             <div class="a-meta">Selkirk · ⭐ 4.8 · 98 demos</div>
@@ -440,7 +443,13 @@
           </div>
         </div>
         <div class="chips"><span class="chip">Vanguard 2</span><span class="chip">Labs 003</span><span class="chip">Invikta</span></div>
-        <div class="a-foot"><div class="status"><div class="dot dot-y"></div>Today 2pm – arrives in 2hrs</div><button class="cta cta-dark">Directions →</button></div>
+        <div class="a-foot">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div class="status"><div class="dot dot-y"></div>Today 2pm – arrives in 2hrs</div>
+            <div style="font-size:11px;color:var(--muted);" id="card-int-1">🏓 4 paddles · 👋 <span id="card-int-count-1">0</span> interested</div>
+          </div>
+          <button class="cta cta-dark" onclick="event.stopPropagation();openPanel(1)">Directions →</button>
+        </div>
       </div>
     </div>
  
@@ -448,7 +457,7 @@
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
-          <div class="av" style="background:#E8533A;"><img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Marcus" onerror="this.style.display='none'"/>MP</div>
+          <div class="av" style="background:#E8533A;">MP</div>
           <div class="a-info">
             <div class="a-name">Marcus Powell</div>
             <div class="a-meta">Joola · ⭐ 4.7 · 76 demos</div>
@@ -456,7 +465,13 @@
           </div>
         </div>
         <div class="chips"><span class="chip">Vision CGS</span><span class="chip">Hyperion</span><span class="chip">Perseus</span></div>
-        <div class="a-foot"><div class="status"><div class="dot dot-g"></div>Live now · here until 6pm</div><button class="cta cta-dark">Directions →</button></div>
+        <div class="a-foot">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div class="status"><div class="dot dot-g"></div>Live now · here until 6pm</div>
+            <div style="font-size:11px;color:var(--muted);" id="card-int-2">🏓 4 paddles · 👋 <span id="card-int-count-2">0</span> interested</div>
+          </div>
+          <button class="cta cta-dark" onclick="event.stopPropagation();openPanel(2)">Directions →</button>
+        </div>
       </div>
     </div>
  
@@ -464,7 +479,7 @@
       <div class="a-stripe"></div>
       <div class="a-body">
         <div class="a-top">
-          <div class="av" style="background:#8A8A8A;"><img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Jordan" onerror="this.style.display='none'"/>JL</div>
+          <div class="av" style="background:#8A8A8A;">JL</div>
           <div class="a-info">
             <div class="a-name">Jordan Lee</div>
             <div class="a-meta">Engage · ⭐ 4.6 · 54 demos</div>
@@ -472,7 +487,13 @@
           </div>
         </div>
         <div class="chips"><span class="chip">Pursuit Ultra</span><span class="chip">Encore Pro</span></div>
-        <div class="a-foot"><div class="status"><div class="dot dot-gr"></div>Next: Sat 10am</div><button class="cta cta-light" onclick="openPanel(3)">Next: Sat 10am →</button></div>
+        <div class="a-foot">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div class="status"><div class="dot dot-gr"></div>Next: Sat 10am</div>
+            <div style="font-size:11px;color:var(--muted);" id="card-int-3">🏓 3 paddles · 👋 <span id="card-int-count-3">0</span> interested</div>
+          </div>
+          <button class="cta cta-light" onclick="event.stopPropagation();openPanel(3)">Next: Sat 10am →</button>
+        </div>
       </div>
     </div>
     <div id="no-results" style="display:none;text-align:center;padding:40px 24px 80px;">
@@ -486,26 +507,58 @@
   <!-- SAVED -->
   <div class="p-screen" id="ps-saved">
     <div class="p-page-head"><h1>Saved</h1><p>Your bookmarked ambassadors</p></div>
-    <div class="empty">
-      <div class="empty-icon">🔖</div>
-      <div class="empty-title">Nothing saved yet</div>
-      <div class="empty-sub">Tap Save on any ambassador profile to bookmark them for later</div>
-      <button class="empty-btn" onclick="showPScreen('explore')">Find Ambassadors →</button>
+    <div id="saved-list" style="padding:0 0 20px;">
+      <div class="empty">
+        <div class="empty-icon">🔖</div>
+        <div class="empty-title">Nothing saved yet</div>
+        <div class="empty-sub">Tap Save on any ambassador profile to bookmark them for later</div>
+        <button class="empty-btn" onclick="showPScreen('explore')">Find Ambassadors →</button>
+      </div>
     </div>
   </div>
  
   <!-- SCHEDULE -->
   <div class="p-screen" id="ps-schedule">
     <div class="p-page-head"><h1>This Week</h1><p>All demos near Hayward, CA</p></div>
-    <div class="day-lbl">Today — Monday</div>
-    <div class="s-card live" onclick="openPanel(0)"><div class="s-time"><div class="s-time-main">Now</div><div class="s-time-end">→ 7pm</div></div><div class="s-div"></div><div class="s-info"><div class="s-name">Kevin Martinez</div><div class="s-brand">Ronbus · 5 paddles</div><div class="s-park">📍 Hayward Memorial · 0.3 mi</div></div><div class="live-badge">Live</div></div>
-    <div class="s-card" onclick="openPanel(1)"><div class="s-time"><div class="s-time-main">2pm</div><div class="s-time-end">→ 5pm</div></div><div class="s-div"></div><div class="s-info"><div class="s-name">Sarah Rhodes</div><div class="s-brand">Selkirk · 4 paddles</div><div class="s-park">📍 Manor Park · 0.8 mi</div></div><div class="blink-dot"></div></div>
-    <div class="s-card live" onclick="openPanel(2)"><div class="s-time"><div class="s-time-main">Now</div><div class="s-time-end">→ 6pm</div></div><div class="s-div"></div><div class="s-info"><div class="s-name">Marcus Powell</div><div class="s-brand">Joola · 4 paddles</div><div class="s-park">📍 Oakland Courts · 1.2 mi</div></div><div class="live-badge">Live</div></div>
-    <div class="day-lbl">Wednesday</div>
-    <div class="s-card" onclick="openPanel(0)"><div class="s-time"><div class="s-time-main">6am</div><div class="s-time-end">→ 9am</div></div><div class="s-div"></div><div class="s-info"><div class="s-name">Kevin Martinez</div><div class="s-brand">Ronbus · 5 paddles</div><div class="s-park">📍 Hayward Memorial</div></div></div>
-    <div class="day-lbl">Saturday</div>
-    <div class="s-card" onclick="openPanel(3)"><div class="s-time"><div class="s-time-main">10am</div><div class="s-time-end">→ 2pm</div></div><div class="s-div"></div><div class="s-info"><div class="s-name">Jordan Lee</div><div class="s-brand">Engage · 3 paddles</div><div class="s-park">📍 Discovery Meadow · 1.8 mi</div></div></div>
-    <div class="s-card" onclick="openPanel(0)"><div class="s-time"><div class="s-time-main">8am</div><div class="s-time-end">→ 12pm</div></div><div class="s-div"></div><div class="s-info"><div class="s-name">Kevin Martinez</div><div class="s-brand">Ronbus · 5 paddles</div><div class="s-park">📍 Manor Park</div></div></div>
+    <div class="day-lbl">Today — Mar 31</div>
+    <div class="s-card live" onclick="openPanel(0)">
+      <div class="s-time"><div class="s-time-main">Now</div><div class="s-time-end">→ 7pm</div></div>
+      <div class="s-div"></div>
+      <div class="s-info"><div class="s-name">Kevin Martinez</div><div class="s-brand">Ronbus · 5 paddles</div><div class="s-park">📍 Hayward Memorial · 0.3 mi</div></div>
+      <div class="live-badge">Live</div>
+    </div>
+    <div class="s-card" onclick="openPanel(1)">
+      <div class="s-time"><div class="s-time-main">2pm</div><div class="s-time-end">→ 5pm</div></div>
+      <div class="s-div"></div>
+      <div class="s-info"><div class="s-name">Sarah Rhodes</div><div class="s-brand">Selkirk · 4 paddles</div><div class="s-park">📍 Manor Park · 0.8 mi</div></div>
+      <div class="blink-dot"></div>
+    </div>
+    <div class="s-card live" onclick="openPanel(2)">
+      <div class="s-time"><div class="s-time-main">Now</div><div class="s-time-end">→ 6pm</div></div>
+      <div class="s-div"></div>
+      <div class="s-info"><div class="s-name">Marcus Powell</div><div class="s-brand">Joola · 4 paddles</div><div class="s-park">📍 Oakland Courts · 1.2 mi</div></div>
+      <div class="live-badge">Live</div>
+    </div>
+    <div class="day-lbl">Wednesday · Apr 01</div>
+    <div class="s-card">
+      <div class="s-time"><div class="s-time-main">6am</div><div class="s-time-end">→ 9am</div></div>
+      <div class="s-div"></div>
+      <div class="s-info"><div class="s-name">Kevin Martinez</div><div class="s-brand">Ronbus · 5 paddles</div><div class="s-park">📍 Hayward Memorial</div></div>
+      <button onclick="toggleScheduleInterested(this, 'kevin-wed')" class="s-interested-btn">👋 Interested</button>
+    </div>
+    <div class="day-lbl">Saturday · Apr 04</div>
+    <div class="s-card">
+      <div class="s-time"><div class="s-time-main">10am</div><div class="s-time-end">→ 2pm</div></div>
+      <div class="s-div"></div>
+      <div class="s-info"><div class="s-name">Jordan Lee</div><div class="s-brand">Engage · 3 paddles</div><div class="s-park">📍 Discovery Meadow · 1.8 mi</div></div>
+      <button onclick="toggleScheduleInterested(this, 'jordan-sat')" class="s-interested-btn">👋 Interested</button>
+    </div>
+    <div class="s-card">
+      <div class="s-time"><div class="s-time-main">8am</div><div class="s-time-end">→ 12pm</div></div>
+      <div class="s-div"></div>
+      <div class="s-info"><div class="s-name">Kevin Martinez</div><div class="s-brand">Ronbus · 5 paddles</div><div class="s-park">📍 Manor Park</div></div>
+      <button onclick="toggleScheduleInterested(this, 'kevin-sat')" class="s-interested-btn">👋 Interested</button>
+    </div>
   </div>
  
   <!-- FILTERS -->
@@ -633,18 +686,97 @@
           <div style="font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer;" onclick="ambLogout()">Sign out</div>
         </div>
       </div>
-      <div class="live-banner"><span style="font-size:18px;">⚡</span><div><strong>You're live at Hayward Memorial Park</strong> until 7pm — players can see you now</div></div>
+      <div id="checkin-banner" style="margin:12px 12px 0;">
+        <!-- Not checked in state -->
+        <div id="not-checked-in" style="background:var(--gray);border:1.5px solid var(--gray2);border-radius:var(--radius-sm);padding:14px 16px;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">You have a session today</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Hayward Memorial Park · Today Mar 31 · Now–7pm · Tap to go live when you arrive</div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="checkIn()" style="flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:var(--radius-pill);font-size:14px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;">⚡ I'm Here — Go Live</button>
+          </div>
+        </div>
+        <!-- Checked in state -->
+        <div id="checked-in" style="display:none;background:var(--green-light);border:1.5px solid var(--green);border-radius:var(--radius-sm);padding:14px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--green-dark);">⚡ You're Live!</div>
+              <div style="font-size:12px;color:var(--green-dark);margin-top:2px;">Hayward Memorial Park · Players can find you now</div>
+              <div style="font-size:11px;color:var(--green-dark);margin-top:4px;" id="checkin-time"></div>
+            </div>
+            <button onclick="showLeaveConfirm()" style="padding:8px 14px;background:white;color:var(--red);border:1.5px solid var(--red);border-radius:var(--radius-pill);font-size:11px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;">Leave</button>
+          </div>
+          <!-- Inline leave confirmation -->
+          <div id="leave-confirm" style="display:none;margin-top:10px;background:white;border-radius:var(--radius-sm);padding:12px;border:1px solid var(--gray2);">
+            <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Go offline and stop showing as live?</div>
+            <div style="display:flex;gap:8px;">
+              <button onclick="checkOut()" style="flex:1;padding:10px;background:var(--red);color:white;border:none;border-radius:var(--radius-pill);font-size:12px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;">Yes, Leave</button>
+              <button onclick="hideLeaveConfirm()" style="flex:1;padding:10px;background:var(--gray);color:var(--text);border:none;border-radius:var(--radius-pill);font-size:12px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;">Stay Live</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="stats-row">
         <div class="stat-card"><div class="stat-val">142</div><div class="stat-lbl">Total demos</div></div>
-        <div class="stat-card"><div class="stat-val">31</div><div class="stat-lbl">This month</div></div>
+        <div class="stat-card"><div class="stat-val">8</div><div class="stat-lbl">Interested today</div></div>
         <div class="stat-card"><div class="stat-val">4.9⭐</div><div class="stat-lbl">Rating</div></div>
       </div>
+      <div style="background:#FFF8E1;border:1.5px solid #F5C842;border-radius:var(--radius-sm);padding:12px 14px;margin:10px 12px 0;display:flex;align-items:center;gap:10px;font-size:13px;">
+        <span style="font-size:18px;">✅</span>
+        <div><strong>0 no-show reports</strong> — your attendance record is perfect. Keep it up!</div>
+      </div>
+      <div class="amb-card" style="margin-top:12px;">
+        <div class="amb-card-title">👋 Interested players</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px;">
+          <div style="background:var(--green-light);border:1.5px solid var(--green);border-radius:var(--radius-sm);padding:12px 14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-weight:700;font-size:14px;" id="amb-interested-text">0 people interested</div>
+                <div style="font-size:12px;color:var(--green-dark);margin-top:2px;">Today Mar 31 · Hayward Memorial Park · Now–7pm</div>
+              </div>
+              <div style="font-family:'Barlow',sans-serif;font-size:28px;font-weight:900;color:var(--muted);" id="amb-interested-num">0</div>
+            </div>
+ 
+          </div>
+ 
+        </div>
+      </div>
+ 
       <div class="amb-card" style="margin-top:12px;">
         <div class="amb-card-title">This week</div>
         <div class="sess-list">
-          <div class="sess-item live"><div class="sess-tag live">Live</div><div class="sess-detail"><div class="sess-main">Hayward Memorial Park</div><div class="sess-sub">Today · Now–7pm · Ripple V2, Quanta, Pulsar</div></div></div>
-          <div class="sess-item"><div class="sess-tag up">Wed</div><div class="sess-detail"><div class="sess-main">Hayward Memorial Park</div><div class="sess-sub">Wednesday · 6am–9am · Ripple V2, Nova</div></div></div>
-          <div class="sess-item"><div class="sess-tag up">Sat</div><div class="sess-detail"><div class="sess-main">Manor Park — San Leandro</div><div class="sess-sub">Saturday · 8am–12pm · Full bag</div></div></div>
+          <div class="sess-item live" id="home-sess-today">
+            <div class="sess-tag live" id="home-sess-tag">Not Live</div>
+            <div class="sess-detail">
+              <div class="sess-main">Hayward Memorial Park</div>
+              <div class="sess-sub">Mar 31 · Now–7pm · Ripple V2, Quanta, Pulsar</div>
+            </div>
+            <div style="text-align:center;flex-shrink:0;min-width:36px;">
+              <div style="font-family:'Barlow',sans-serif;font-size:20px;font-weight:900;color:var(--green);" id="home-today-num">0</div>
+              <div style="font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">interested</div>
+            </div>
+          </div>
+          <div class="sess-item">
+            <div class="sess-tag up">Wed</div>
+            <div class="sess-detail">
+              <div class="sess-main">Hayward Memorial Park</div>
+              <div class="sess-sub">Wed Apr 01 · 6am–9am · Ripple V2, Nova</div>
+            </div>
+            <div style="text-align:center;flex-shrink:0;min-width:36px;">
+              <div style="font-family:'Barlow',sans-serif;font-size:20px;font-weight:900;color:var(--muted);" id="home-wed-num">0</div>
+              <div style="font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">interested</div>
+            </div>
+          </div>
+          <div class="sess-item">
+            <div class="sess-tag up">Sat</div>
+            <div class="sess-detail">
+              <div class="sess-main">Manor Park — San Leandro</div>
+              <div class="sess-sub">Sat Apr 04 · 8am–12pm · Full bag · 5 paddles</div>
+            </div>
+            <div style="text-align:center;flex-shrink:0;min-width:36px;">
+              <div style="font-family:'Barlow',sans-serif;font-size:20px;font-weight:900;color:var(--muted);" id="home-sat-num">0</div>
+              <div style="font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">interested</div>
+            </div>
+          </div>
         </div>
         <button class="add-btn" onclick="showAmbPage('schedule')">+ Add Session</button>
       </div>
@@ -719,7 +851,7 @@
         </div>
  
         <div class="sess-list" id="amb-sess-list">
-          <div class="sess-item live"><div class="sess-tag live">Live</div><div class="sess-detail"><div class="sess-main">Hayward Memorial Park</div><div class="sess-sub">Today · Now–7:00 PM · Ripple V2, Quanta, Pulsar</div></div><button class="del-btn" onclick="delSess(this)" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+          <div class="sess-item live"><div class="sess-tag live">Live</div><div class="sess-detail"><div class="sess-main">Hayward Memorial Park</div><div class="sess-sub">Tue Mar 31 · Now–7:00 PM · Ripple V2, Quanta, Pulsar</div></div><button class="del-btn" onclick="delSess(this)" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
             <button class="cancel-sess-btn" onclick="cancelSess(this)" style="width:28px;height:28px;border-radius:8px;border:none;background:#FDECEA;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Cancel session">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8533A" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             </button>
@@ -727,7 +859,7 @@
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00A86B" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             </button>
           </div>
-          <div class="sess-item"><div class="sess-tag up">Wed</div><div class="sess-detail"><div class="sess-main">Hayward Memorial Park</div><div class="sess-sub">Wednesday · 6:00 AM–9:00 AM · Ripple V2, Nova</div></div><button class="del-btn" onclick="delSess(this)" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+          <div class="sess-item"><div class="sess-tag up">Wed</div><div class="sess-detail"><div class="sess-main">Hayward Memorial Park</div><div class="sess-sub">Wed Apr 01 · 6:00 AM–9:00 AM</div><div class="sess-sub">Ripple V2, Nova</div></div><button onclick="editSess(this)" style="width:28px;height:28px;border-radius:8px;border:none;background:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Edit session"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="del-btn" onclick="delSess(this)" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
             <button class="cancel-sess-btn" onclick="cancelSess(this)" style="width:28px;height:28px;border-radius:8px;border:none;background:#FDECEA;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Cancel session">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8533A" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             </button>
@@ -735,7 +867,7 @@
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00A86B" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             </button>
           </div>
-          <div class="sess-item"><div class="sess-tag up">Sat</div><div class="sess-detail"><div class="sess-main">Manor Park — San Leandro</div><div class="sess-sub">Saturday · 8:00 AM–12:00 PM · Full bag (5 paddles)</div></div><button class="del-btn" onclick="delSess(this)" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+          <div class="sess-item"><div class="sess-tag up">Sat</div><div class="sess-detail"><div class="sess-main">Manor Park — San Leandro</div><div class="sess-sub">Sat Apr 04 · 8:00 AM–12:00 PM</div><div class="sess-sub">Full bag · 5 paddles</div></div><button onclick="editSess(this)" style="width:28px;height:28px;border-radius:8px;border:none;background:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Edit session"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="del-btn" onclick="delSess(this)" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
             <button class="cancel-sess-btn" onclick="cancelSess(this)" style="width:28px;height:28px;border-radius:8px;border:none;background:#FDECEA;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Cancel session">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8533A" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             </button>
@@ -790,7 +922,7 @@
         <div class="amb-card-title">Ambassador info</div>
         <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;padding:14px;background:var(--gray);border-radius:var(--radius-sm);">
           <div style="width:64px;height:64px;border-radius:16px;overflow:hidden;flex-shrink:0;background:#00A86B;">
-            <img id="profile-photo-preview" src="https://randomuser.me/api/portraits/men/32.jpg" style="width:100%;height:100%;object-fit:cover;" alt="Profile"/>
+            <img id="profile-photo-preview" style="width:100%;height:100%;object-fit:cover;display:none;" alt="Profile"/>
           </div>
           <div>
             <div style="font-weight:600;font-size:14px;margin-bottom:6px;">Profile photo</div>
@@ -853,30 +985,30 @@
  
 <script>
 const ambassadors = [
-  { name:'Kevin Martinez', initials:'KM', photo:'https://randomuser.me/api/portraits/men/32.jpg', color:'#00A86B', brand:'Ronbus', rating:'4.9', demos:'142', park:'Hayward Memorial Park', dist:'0.3 mi', status:'At the park right now', dot:'dot-g', live:true, phone:'5101234567', paddles:[
+  { name:'Kevin Martinez', initials:'KM', color:'#00A86B', brand:'Ronbus', rating:'4.9', demos:'142', park:'Hayward Memorial Park', dist:'0.3 mi', status:'At the park right now', dot:'dot-g', live:true, phone:'5101234567', interested:3, paddles:[
   {name:'Ripple V2 R1',tag:'Power',url:'https://ronbus.com/products/ripple-v2-r1-14'},
   {name:'Ripple V2 R2',tag:'Power',url:'https://ronbus.com/products/ripple-v2-r2-14'},
   {name:'Quanta R2',tag:'Control',url:'https://ronbus.com/collections/paddles'},
   {name:'Pulsar',tag:'All-round',url:'https://ronbus.com/collections/paddles'},
   {name:'Nova',tag:'Beginner friendly',url:'https://ronbus.com/collections/paddles'}
-], bio:'Ronbus ambassador for 2 years. 4.5 rated player in Hayward. Always happy to let you try every paddle — no pressure.', reviews:[{name:'Mike R.',text:'Super helpful! Tried 4 paddles, ended up buying the Ripple V2.',stars:5},{name:'Sarah L.',text:'Kevin really knows his stuff. Came out specifically to try the Quanta.',stars:5},{name:'James K.',text:'Great experience. He let me play a full game with the Pulsar.',stars:4}], schedule:[{day:'Today',time:'Now — 7pm',park:'Hayward Memorial'},{day:'Wed',time:'6am — 9am',park:'Hayward Memorial'},{day:'Sat',time:'8am — 12pm',park:'Manor Park'}] },
-  { name:'Sarah Rhodes', initials:'SR', photo:'https://randomuser.me/api/portraits/women/44.jpg', color:'#1E6FD9', brand:'Selkirk', rating:'4.8', demos:'98', park:'Manor Park', dist:'0.8 mi', status:'Today 2–5pm', dot:'dot-y', live:false, phone:'5102345678', paddles:[
+], bio:'Ronbus ambassador for 2 years. 4.5 rated player in Hayward. Always happy to let you try every paddle — no pressure.', reviews:[{name:'Mike R.',text:'Super helpful! Tried 4 paddles, ended up buying the Ripple V2.',stars:5},{name:'Sarah L.',text:'Kevin really knows his stuff. Came out specifically to try the Quanta.',stars:5},{name:'James K.',text:'Great experience. He let me play a full game with the Pulsar.',stars:4}], schedule:[{day:'Today · Mar 31',time:'Now — 7pm',park:'Hayward Memorial'},{day:'Wed · Apr 01',time:'6am — 9am',park:'Hayward Memorial'},{day:'Sat · Apr 04',time:'8am — 12pm',park:'Manor Park'}] },
+  { name:'Sarah Rhodes', initials:'SR', color:'#1E6FD9', brand:'Selkirk', rating:'4.8', demos:'98', park:'Manor Park', dist:'0.8 mi', status:'Today 2–5pm', dot:'dot-y', live:false, phone:'5102345678', interested:1, paddles:[
   {name:'Vanguard Power Air',tag:'Power',url:'https://www.selkirk.com/products/vanguard-power-air'},
   {name:'Labs 003',tag:'Control',url:'https://www.selkirklabs.com/products/selkirk-labs-project-003'},
   {name:'Invikta',tag:'All-round',url:'https://www.selkirk.com/products/vanguard-air-invikta'},
   {name:'Omni',tag:'Beginner friendly',url:'https://www.selkirk.com/collections/all'}
-], bio:'Selkirk ambassador and instructor. Great for beginners finding their first premium paddle.', reviews:[{name:'Anna T.',text:'Sarah was so patient. Perfect for beginners like me.',stars:5},{name:'Chris M.',text:'Tried the Labs 003 and bought it on the spot!',stars:5}], schedule:[{day:'Today',time:'2pm — 5pm',park:'Manor Park'},{day:'Thu',time:'5pm — 8pm',park:'Manor Park'},{day:'Sun',time:'9am — 1pm',park:'Hayward Memorial'}] },
-  { name:'Marcus Powell', initials:'MP', photo:'https://randomuser.me/api/portraits/men/75.jpg', color:'#E8533A', brand:'Joola', rating:'4.7', demos:'76', park:'Oakland Pickleball Courts', dist:'1.2 mi', status:'Here until 6pm', dot:'dot-g', live:true, phone:'5103456789', paddles:[
+], bio:'Selkirk ambassador and instructor. Great for beginners finding their first premium paddle.', reviews:[{name:'Anna T.',text:'Sarah was so patient. Perfect for beginners like me.',stars:5},{name:'Chris M.',text:'Tried the Labs 003 and bought it on the spot!',stars:5}], schedule:[{day:'Today · Mar 31',time:'2pm — 5pm',park:'Manor Park'},{day:'Thu · Apr 02',time:'5pm — 8pm',park:'Manor Park'},{day:'Sun · Apr 05',time:'9am — 1pm',park:'Hayward Memorial'}] },
+  { name:'Marcus Powell', initials:'MP', color:'#E8533A', brand:'Joola', rating:'4.7', demos:'76', park:'Oakland Pickleball Courts', dist:'1.2 mi', status:'Here until 6pm', dot:'dot-g', live:true, phone:'5103456789', interested:5, paddles:[
   {name:'Vision CGS 16',tag:'Control',url:'https://joola.com/collections/pickleball-paddles'},
   {name:'Hyperion CFS',tag:'Power',url:'https://joola.com/collections/pickleball-paddles'},
   {name:'Perseus Pro IV',tag:'All-round',url:'https://joola.com/products/joola-perseus-iv-16mm-pickleball-paddle-1'},
   {name:'Solaire',tag:'Beginner friendly',url:'https://joola.com/collections/pickleball-paddles'}
-], bio:'5.0 competitive player and Joola ambassador. Best for advanced players wanting to feel the difference.', reviews:[{name:'David K.',text:'Marcus gave me a full breakdown of each paddle. Incredibly knowledgeable.',stars:5},{name:'Lisa P.',text:'Drove 20 mins and it was totally worth it.',stars:4}], schedule:[{day:'Today',time:'Now — 6pm',park:'Oakland Courts'},{day:'Fri',time:'6am — 9am',park:'Oakland Courts'},{day:'Sat',time:'7am — 11am',park:'Oakland Courts'}] },
-  { name:'Jordan Lee', initials:'JL', color:'#8A8A8A', brand:'Engage', rating:'4.6', demos:'54', park:'San Jose Discovery Meadow', dist:'1.8 mi', status:'Next: Sat 10am', dot:'dot-gr', live:false, phone:'5104567890', paddles:[
+], bio:'5.0 competitive player and Joola ambassador. Best for advanced players wanting to feel the difference.', reviews:[{name:'David K.',text:'Marcus gave me a full breakdown of each paddle. Incredibly knowledgeable.',stars:5},{name:'Lisa P.',text:'Drove 20 mins and it was totally worth it.',stars:4}], schedule:[{day:'Today · Mar 31',time:'Now — 6pm',park:'Oakland Courts'},{day:'Fri · Apr 03',time:'6am — 9am',park:'Oakland Courts'},{day:'Sat · Apr 04',time:'7am — 11am',park:'Oakland Courts'}] },
+  { name:'Jordan Lee', initials:'JL', color:'#8A8A8A', brand:'Engage', rating:'4.6', demos:'54', park:'San Jose Discovery Meadow', dist:'1.8 mi', status:'Next: Sat 10am', dot:'dot-gr', live:false, phone:'5104567890', interested:0, paddles:[
   {name:'Pursuit Ultra',tag:'Power',url:'https://engagepickleball.com/collections/pickleball-paddles'},
   {name:'Encore Pro',tag:'Control',url:'https://engagepickleball.com/collections/pickleball-paddles'},
   {name:'Poach Icon',tag:'All-round',url:'https://engagepickleball.com/collections/pickleball-paddles'}
-], bio:'Engage ambassador and rec player. Loves helping people find the right power-control balance.', reviews:[{name:'Tom B.',text:'Jordan is super chill and knowledgeable. Great experience.',stars:5}], schedule:[{day:'Sat',time:'10am — 2pm',park:'Discovery Meadow'},{day:'Sun',time:'8am — 11am',park:'Discovery Meadow'}] }
+], bio:'Engage ambassador and rec player. Loves helping people find the right power-control balance.', reviews:[{name:'Tom B.',text:'Jordan is super chill and knowledgeable. Great experience.',stars:5}], schedule:[{day:'Sat · Apr 04',time:'10am — 2pm',park:'Discovery Meadow'},{day:'Sun · Apr 05',time:'8am — 11am',park:'Discovery Meadow'}] }
 ];
  
 // MODE
@@ -896,6 +1028,141 @@ function showPScreen(name) {
 }
  
 // PANEL
+function buildScheduleHtml(a, i) {
+  const stored = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+  return a.schedule.map(function(s, si) {
+    const isToday = s.day.toLowerCase().indexOf('today') === 0;
+    const firstName = a.name.split(' ')[0].toLowerCase();
+    const dayKey = s.day.split(' · ')[0].toLowerCase().replace(/[^a-z]/g, '');
+    const sessionKey = firstName + '-' + dayKey;
+    const interested = stored[sessionKey];
+    const dayParts = s.day.split(' · ');
+    const calBtn = !s.cancelled
+      ? '<button onclick="event.stopPropagation();addToCalendar(\'' + a.name + '\',\'' + a.park + '\',\'' + s.day + '\',\'' + s.time + '\')" style="padding:4px 10px;background:var(--green-light);color:var(--green-dark);border:none;border-radius:20px;font-size:10px;font-weight:700;font-family:Barlow,sans-serif;cursor:pointer;flex-shrink:0;">+ Cal</button>'
+      : '';
+    const clickable = !isToday && !s.cancelled;
+    return '<div class="panel-sched" onclick="' + (clickable ? 'openSessionDetail(' + i + ',' + si + ')' : '') + '" style="' + (s.cancelled ? 'opacity:0.5;' : '') + (clickable ? 'cursor:pointer;' : '') + '">'
+      + '<div class="panel-sched-day" style="' + (s.cancelled ? 'text-decoration:line-through;' : '') + '">' + dayParts[0] + '<br><span style="font-size:10px;color:var(--muted);font-weight:500;">' + (dayParts[1] || '') + '</span></div>'
+      + '<div class="panel-sched-time">' + (s.cancelled ? '❌ Cancelled' : s.time) + '</div>'
+      + '<div class="panel-sched-park">' + s.park + '</div>'
+      + '<div style="display:flex;gap:6px;margin-left:auto;">'
+      
+      + calBtn
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+ 
+function openSessionDetail(ambIdx, sessIdx) {
+  const a = ambassadors[ambIdx];
+  const s = a.schedule[sessIdx];
+  const firstName = a.name.split(' ')[0].toLowerCase();
+  const dayKey = s.day.split(' · ')[0].toLowerCase().replace(/[^a-z]/g, '');
+  const sessionKey = firstName + '-' + dayKey;
+  const stored = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+  const interested = stored[sessionKey];
+  const dayParts = s.day.split(' · ');
+ 
+  document.getElementById('panel-content').innerHTML =
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;cursor:pointer;" onclick="openPanel(' + ambIdx + ')">'
+    + '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>'
+    + '<span style="font-size:13px;font-weight:600;color:var(--muted);">Back to ' + a.name + '</span>'
+    + '</div>'
+    + '<div style="background:var(--black);border-radius:var(--radius-sm);padding:16px;margin-bottom:14px;">'
+    + '<div style="font-family:Barlow,sans-serif;font-size:22px;font-weight:900;color:white;text-transform:uppercase;">' + dayParts[0] + '</div>'
+    + '<div style="font-size:13px;color:rgba(255,255,255,0.5);margin-top:2px;">' + (dayParts[1] || '') + ' · ' + s.time + '</div>'
+    + '<div style="font-size:13px;color:var(--green);font-weight:600;margin-top:4px;">📍 ' + s.park + '</div>'
+    + '</div>'
+    + '<div style="background:var(--gray);border-radius:var(--radius-sm);padding:14px;margin-bottom:14px;">'
+    + '<div style="font-size:13px;font-weight:600;margin-bottom:4px;">' + a.name + ' · ' + a.brand + '</div>'
+    + '<div style="font-size:12px;color:var(--muted);">⭐ ' + a.rating + ' · ' + a.demos + ' demos</div>'
+    + '</div>'
+    + '<div id="sess-int-box" style="background:' + (interested ? 'var(--green-light)' : 'var(--gray)') + ';border:1.5px solid ' + (interested ? 'var(--green)' : 'var(--gray2)') + ';border-radius:var(--radius-sm);padding:14px;margin-bottom:14px;">'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">'
+    + '<div><div style="font-size:13px;font-weight:600;">👋 Let ' + a.name.split(' ')[0] + ' know you\'re planning to come</div><div style="font-size:11px;color:var(--muted);margin-top:3px;">No commitment — just a heads up</div></div>'
+    + '<button id="sess-int-btn" onclick="toggleSessionInterested(\'' + sessionKey + '\',\'' + a.name + '\')" style="padding:9px 16px;background:' + (interested ? 'var(--green-dark)' : 'var(--green)') + ';color:white;border:none;border-radius:var(--radius-pill);font-size:12px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;flex-shrink:0;">' + (interested ? '✓ Interested!' : "I\'m Interested") + '</button>'
+    + '</div>'
+    + '<div style="font-size:12px;color:' + (interested ? 'var(--green-dark)' : 'var(--muted)') + ';font-weight:600;" id="sess-int-count">' + (function(){ var allStored = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}'); var c = Object.keys(allStored).filter(function(k){ return k === sessionKey; }).length; return c + (c === 1 ? ' person' : ' people') + ' interested so far'; })() + '</div>'
+    + '</div>'
+    + '<button onclick="addToCalendar(\'' + a.name + '\',\'' + s.park + '\',\'' + s.day + '\',\'' + s.time + '\')" style="width:100%;padding:13px;background:var(--gray);color:var(--text);border:none;border-radius:var(--radius-pill);font-size:13px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;margin-bottom:8px;">📅 Add to Calendar</button>'
+    + '<button onclick="getDirections(\'' + s.park + '\',0,0)" style="width:100%;padding:13px;background:var(--green);color:white;border:none;border-radius:var(--radius-pill);font-size:13px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;">📍 Get Directions</button>';
+}
+ 
+function toggleSessionInterested(sessionKey, ambassadorName) {
+  const stored = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+  const btn = document.getElementById('sess-int-btn');
+  const box = document.getElementById('sess-int-box');
+  if (stored[sessionKey]) {
+    delete stored[sessionKey];
+    if (btn) { btn.textContent = "I'm Interested"; btn.style.background = 'var(--green)'; }
+    if (box) { box.style.background = 'var(--gray)'; box.style.borderColor = 'var(--gray2)'; }
+    showToast('Removed your interest.');
+  } else {
+    stored[sessionKey] = true;
+    if (btn) { btn.textContent = '✓ Interested!'; btn.style.background = 'var(--green-dark)'; }
+    if (box) { box.style.background = 'var(--green-light)'; box.style.borderColor = 'var(--green)'; }
+    showToast('👋 ' + ambassadorName + ' can see you\'re planning to come!');
+  }
+  localStorage.setItem('swingby-sched-interested', JSON.stringify(stored));
+ 
+  // Sync schedule screen buttons
+  document.querySelectorAll('.s-interested-btn').forEach(function(b) {
+    const key = b.getAttribute('onclick') ? b.getAttribute('onclick').match(/'([^']+)'/)?.[1] : null;
+    if (key === sessionKey) {
+      if (stored[sessionKey]) { b.textContent = '✓ Interested!'; b.classList.add('active'); }
+      else { b.textContent = '👋 Interested'; b.classList.remove('active'); }
+    }
+  });
+ 
+  // Update ambassador dashboard with clean IDs
+  const allKeys = Object.keys(stored);
+  const wedCount = allKeys.filter(function(k){ return k.includes('wed'); }).length;
+  const satCount = allKeys.filter(function(k){ return k.includes('sat'); }).length;
+ 
+  function updateSessBox(boxId, textId, numId, count) {
+    const box = document.getElementById(boxId);
+    const txt = document.getElementById(textId);
+    const num = document.getElementById(numId);
+    if (!box) return;
+    if (count > 0) {
+      box.style.background = 'var(--green-light)';
+      box.style.border = '1.5px solid var(--green)';
+      if (num) { num.textContent = count; num.style.color = 'var(--green)'; }
+    } else {
+      box.style.background = 'var(--gray)';
+      box.style.border = '1.5px solid var(--gray2)';
+      if (num) { num.textContent = 0; num.style.color = 'var(--muted)'; }
+    }
+    if (txt) txt.textContent = count + (count === 1 ? ' person interested' : ' people interested');
+  }
+ 
+  updateSessBox('amb-sess-wed', 'amb-wed-text', 'amb-wed-num', wedCount);
+  updateSessBox('amb-sess-sat', 'amb-sat-text', 'amb-sat-num', satCount);
+ 
+  // Update home page session counts
+  const homeWed = document.getElementById('home-wed-num');
+  const homeSat = document.getElementById('home-sat-num');
+  if (homeWed) { homeWed.textContent = wedCount; homeWed.style.color = wedCount > 0 ? 'var(--green)' : 'var(--muted)'; }
+  if (homeSat) { homeSat.textContent = satCount; homeSat.style.color = satCount > 0 ? 'var(--green)' : 'var(--muted)'; }
+ 
+  // Update card counts
+  const jordanCount = allKeys.filter(function(k){ return k.includes('jordan'); }).length;
+  const kevinFutureCount = allKeys.filter(function(k){ return k.includes('kevin') && !k.includes('today'); }).length;
+  const kevinCardCount = document.getElementById('card-int-count-0');
+  const jordanCardCount = document.getElementById('card-int-count-3');
+  if (kevinCardCount) kevinCardCount.textContent = interestedSet.size + kevinFutureCount;
+  if (jordanCardCount) jordanCardCount.textContent = jordanCount;
+ 
+  // Update stat card total
+  const statCards = document.querySelectorAll('.stat-card');
+  statCards.forEach(function(card) {
+    const lbl = card.querySelector('.stat-lbl');
+    if (lbl && lbl.textContent === 'Interested today') {
+      card.querySelector('.stat-val').textContent = interestedSet.size + allKeys.length;
+    }
+  });
+}
+ 
 function openPanel(i) {
   const a = ambassadors[i];
   const liveTag = a.live ? `<span style="background:var(--green);color:white;font-size:10px;font-weight:800;font-family:Barlow,sans-serif;padding:3px 10px;border-radius:20px;text-transform:uppercase;margin-left:8px;">Live Now</span>` : '';
@@ -910,7 +1177,7 @@ function openPanel(i) {
   `).join('');
   document.getElementById('panel-content').innerHTML = `
     <div class="panel-head">
-      <div class="panel-av" style="background:${a.color}"><img src="${a.photo}" alt="${a.name}" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" onerror="this.style.display='none'"/></div>
+      <div class="panel-av" style="background:${a.color}">${a.initials}</div>
       <div style="flex:1;">
         <div style="display:flex;align-items:center;""><div class="panel-name">${a.name}</div>${liveTag}</div>
         <div class="panel-brand">${a.brand} · ⭐ ${a.rating} · ${a.demos} demos</div>
@@ -931,18 +1198,20 @@ function openPanel(i) {
       </a>`;
     }).join('')}</div>
     <div class="panel-lbl">📅 Schedule this week</div>
-    <div style="margin-bottom:14px;">${a.schedule.map(s=>`<div class="panel-sched" style="${s.cancelled ? 'opacity:0.5;text-decoration:line-through;' : ''}"><div class="panel-sched-day">${s.day}</div><div class="panel-sched-time">${s.cancelled ? '❌ Cancelled' : s.time}</div><div class="panel-sched-park">${s.park}</div>${!s.cancelled ? `<button onclick="addToCalendar('${a.name}','${a.park}','${s.day}','${s.time}')" style="margin-left:8px;padding:3px 10px;background:var(--green-light);color:var(--green-dark);border:none;border-radius:20px;font-size:10px;font-weight:700;font-family:Barlow,sans-serif;cursor:pointer;text-transform:uppercase;flex-shrink:0;">+ Cal</button>` : ''}</div>`).join('')}</div>
+    <div style="margin-bottom:14px;max-height:220px;overflow-y:auto;padding-right:4px;">${buildScheduleHtml(a, i)}</div>
     <div class="panel-lbl">💬 Player reviews</div>
     <div style="margin-bottom:16px;">${reviewsHtml}</div>
-    <div style="display:flex;gap:8px;margin-bottom:8px;">
-      <button class="go-btn" style="flex:1;margin-top:0;" onclick="getDirections('${a.park}', 0, 0)">📍 Directions</button>
-      <button onclick="showToast('Letting ${a.name} know you\'re on your way! 🚗')" style="flex:1;padding:15px;background:var(--black);color:white;border:none;border-radius:var(--radius-pill);font-size:13px;font-weight:900;font-family:Barlow,sans-serif;cursor:pointer;text-transform:uppercase;">🚗 On My Way</button>
+    <div id="interested-box-${i}" style="background:var(--gray);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:13px;font-weight:600;">👋 <span id="interested-count-${i}">${a.interested}</span> people interested today</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">Let the ambassador know you might show up</div>
+      </div>
+      <button id="interested-btn-${i}" onclick="toggleInterested(${i})" style="padding:8px 16px;background:var(--green);color:white;border:none;border-radius:var(--radius-pill);font-size:12px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;flex-shrink:0;">I'm Interested</button>
     </div>
-    <div style="display:flex;gap:8px;margin-bottom:8px;">
-      <a href="sms:${a.phone}" style="flex:1;display:block;padding:13px;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:var(--radius-pill);font-size:13px;font-weight:800;font-family:Barlow,sans-serif;text-align:center;text-decoration:none;text-transform:uppercase;">💬 Text</a>
-      <a href="https://wa.me/${a.phone}" style="flex:1;display:block;padding:13px;background:#E8F8EF;color:#25A461;border:1.5px solid #25A461;border-radius:var(--radius-pill);font-size:13px;font-weight:800;font-family:Barlow,sans-serif;text-align:center;text-decoration:none;text-transform:uppercase;">WhatsApp</a>
-    </div>
-    <button class="save-btn" onclick="showToast('${a.name} saved! 🔖')">🔖 Save Ambassador</button>
+    <button class="go-btn" style="margin-top:0;margin-bottom:8px;" onclick="getDirections('${a.park}', 0, 0)">📍 Get Directions</button>
+    <a href="sms:${a.phone}&body=Hey ${a.name}! Are you still available at ${a.park}? I'm thinking of swinging by to demo some paddles." style="display:block;padding:13px;background:var(--green-light);color:var(--green-dark);border:1.5px solid var(--green);border-radius:var(--radius-pill);font-size:13px;font-weight:800;font-family:Barlow,sans-serif;text-align:center;text-decoration:none;text-transform:uppercase;margin-bottom:8px;">💬 Text</a>
+    <button class="save-btn" id="save-amb-btn-${i}" onclick="saveAmbassador(${i}, '${a.name}', '${a.initials}', '${a.color}', '${a.brand}', '${a.park}')">🔖 Save Ambassador</button>
+    <button onclick="reportNoShow(${i}, '${a.name}')" style="width:100%;padding:11px;background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;text-decoration:underline;">Ambassador wasn't there? Report it</button>
   `;
   document.getElementById('panel').classList.add('open');
   document.getElementById('overlay').classList.add('open');
@@ -992,15 +1261,142 @@ function addAmbSession() {
   const list = document.getElementById('amb-sess-list');
   const item = document.createElement('div');
   item.className = 'sess-item';
-  item.innerHTML = `<div class="sess-tag up">${day.substring(0,3)}</div><div class="sess-detail"><div class="sess-main">${park}</div><div class="sess-sub">${day} · ${start} — ${end} · ${paddleText}</div></div><button class="del-btn" onclick="delSess(this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>`;
+  item.innerHTML = '<div class="sess-tag up">' + day.substring(0,3) + '</div>'
+    + '<div class="sess-detail"><div class="sess-main">' + park + '</div>'
+    + '<div class="sess-sub">' + day + ' · ' + start + ' — ' + end + '</div>'
+    + '<div class="sess-sub">' + paddleText + '</div></div>'
+    + '<button onclick="editSess(this)" style="width:28px;height:28px;border-radius:8px;border:none;background:var(--gray);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Edit session"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+    + '<button class="del-btn" onclick="delSess(this)" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>'
+    + '<button class="cancel-sess-btn" onclick="cancelSess(this)" style="width:28px;height:28px;border-radius:8px;border:none;background:#FDECEA;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" title="Cancel session"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8533A" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></button>'
+    + '<button class="restore-btn" onclick="restoreSess(this)" style="display:none;width:28px;height:28px;border-radius:8px;border:none;background:var(--green-light);cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;" title="Restore session"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00A86B" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>';
   list.appendChild(item);
+ 
+  // Sync to player schedule screen
+  addSessionToPlayerSchedule(park, day, start, end, paddleText);
+ 
   toggleAmbForm();
   document.querySelectorAll('.paddle-sel-opt').forEach(p => p.classList.remove('sel'));
   showToast('Session added! Players can find you now. 🎉');
 }
  
+function editSess(btn) {
+  const item = btn.closest('.sess-item');
+  // Don't open if already editing
+  if (item.querySelector('.edit-form')) { 
+    item.querySelector('.edit-form').remove();
+    return;
+  }
+  const subLines = item.querySelectorAll('.sess-sub');
+  const currentPaddles = subLines.length > 1 ? subLines[1].textContent : subLines[0] ? subLines[0].textContent.split(' · ').slice(2).join(', ') : '';
+  const timeText = subLines[0] ? subLines[0].textContent : '';
+ 
+  const form = document.createElement('div');
+  form.className = 'edit-form';
+  form.style.cssText = 'margin-top:10px;padding:12px;background:var(--surface);border-radius:var(--radius-sm);border:1.5px solid var(--green);';
+  form.innerHTML = '<div style="font-family:Barlow,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:8px;">Edit session</div>'
+    + '<div style="margin-bottom:8px;"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;">Time</label>'
+    + '<input type="text" id="edit-time" value="' + timeText.split(' · ').slice(1,2).join('') + '" style="width:100%;padding:8px 10px;border:1.5px solid var(--gray2);border-radius:var(--radius-sm);font-size:13px;font-family:DM Sans,sans-serif;"/></div>'
+    + '<div style="margin-bottom:10px;"><label style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:4px;">Paddles (comma separated)</label>'
+    + '<input type="text" id="edit-paddles" value="' + currentPaddles + '" style="width:100%;padding:8px 10px;border:1.5px solid var(--gray2);border-radius:var(--radius-sm);font-size:13px;font-family:DM Sans,sans-serif;" placeholder="Ripple V2, Quanta, Pulsar..."/></div>'
+    + '<div style="display:flex;gap:8px;">'
+    + '<button onclick="saveEdit(this)" style="flex:1;padding:9px;background:var(--green);color:white;border:none;border-radius:var(--radius-pill);font-size:12px;font-weight:800;font-family:Barlow,sans-serif;text-transform:uppercase;cursor:pointer;">Save ✓</button>'
+    + '<button onclick="cancelEdit(this)" style="padding:9px 14px;background:var(--gray);border:none;border-radius:var(--radius-pill);font-size:12px;font-weight:700;font-family:Barlow,sans-serif;cursor:pointer;">Cancel</button>'
+    + '</div>';
+  item.appendChild(form);
+}
+ 
+function cancelEdit(btn) { btn.closest('.edit-form').remove(); }
+ 
+function addSessionToPlayerSchedule(park, day, start, end, paddles) {
+  // Push to ambassador data so panel schedule shows it
+  ambassadors[0].schedule.push({
+    day: day,
+    time: start + ' — ' + end,
+    park: park,
+    paddles: paddles
+  });
+ 
+  // Add to player schedule screen
+  const schedContainer = document.getElementById('ps-schedule');
+  if (!schedContainer) return;
+ 
+  const startShort = start.replace(':00 ','').replace(' AM','am').replace(' PM','pm');
+  const endShort = end.replace(':00 ','').replace(' AM','am').replace(' PM','pm');
+ 
+  // Get real calendar date for the day
+  const today = new Date();
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let dateStr = '';
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const dName = dayNames[d.getDay()];
+    if (day.toLowerCase().includes(dName.toLowerCase()) || day.toLowerCase().includes(dName.toLowerCase().substring(0,3))) {
+      dateStr = ' · ' + monthNames[d.getMonth()] + ' ' + d.getDate();
+      break;
+    }
+  }
+  if (day.toLowerCase().includes('today')) dateStr = ' · ' + monthNames[today.getMonth()] + ' ' + today.getDate();
+  if (day.toLowerCase().includes('tomorrow')) { const t = new Date(today); t.setDate(today.getDate()+1); dateStr = ' · ' + monthNames[t.getMonth()] + ' ' + t.getDate(); }
+ 
+  const dayLbl = document.createElement('div');
+  dayLbl.className = 'day-lbl new-session-lbl';
+  dayLbl.textContent = day + dateStr;
+ 
+  const card = document.createElement('div');
+  card.className = 's-card new-session';
+  card.style.cursor = 'pointer';
+  card.onclick = function() { openPanel(0); };
+  card.innerHTML = '<div class="s-time"><div class="s-time-main">' + startShort + '</div><div class="s-time-end">→ ' + endShort + '</div></div>'
+    + '<div class="s-div"></div>'
+    + '<div class="s-info"><div class="s-name">Kevin Martinez</div><div class="s-brand">Ronbus · ' + paddles + '</div><div class="s-park">📍 ' + park + '</div></div>';
+ 
+  // Insert before player reviews or at end
+  schedContainer.appendChild(dayLbl);
+  schedContainer.appendChild(card);
+}
+ 
+function saveEdit(btn) {
+  const form = btn.closest('.edit-form');
+  const item = form.closest('.sess-item');
+  const newTime = form.querySelector('#edit-time').value.trim();
+  const newPaddles = form.querySelector('#edit-paddles').value.trim();
+  const subLines = item.querySelectorAll('.sess-sub');
+  if (subLines.length > 1) {
+    if (newTime) subLines[0].textContent = subLines[0].textContent.split(' · ')[0] + (newTime ? ' · ' + newTime : '');
+    subLines[1].textContent = newPaddles;
+  } else if (subLines[0]) {
+    const parts = subLines[0].textContent.split(' · ');
+    subLines[0].textContent = parts[0] + ' · ' + (newTime || parts[1] || '') + (newPaddles ? ' · ' + newPaddles : '');
+  }
+  form.remove();
+  showToast('Session updated! ✓');
+}
+ 
 function delSess(btn) {
-  if (confirm('Delete this session?')) { btn.closest('.sess-item').remove(); showToast('Session removed.'); }
+  const item = btn.closest('.sess-item');
+  const parkName = item.querySelector('.sess-main') ? item.querySelector('.sess-main').textContent : '';
+  item.style.transition = 'opacity 0.2s';
+  item.style.opacity = '0';
+  setTimeout(function() {
+    item.remove();
+    // Also remove from player schedule and ambassador data
+    if (parkName) {
+      document.querySelectorAll('.new-session').forEach(function(card) {
+        if (card.querySelector('.s-park') && card.querySelector('.s-park').textContent.includes(parkName)) {
+          const lbl = card.previousElementSibling;
+          card.remove();
+          if (lbl && lbl.classList.contains('new-session-lbl')) lbl.remove();
+        }
+      });
+      // Remove from ambassador data
+      ambassadors[0].schedule = ambassadors[0].schedule.filter(function(s) {
+        return s.park !== parkName;
+      });
+    }
+    showToast('Session removed.');
+  }, 200);
 }
  
 function cancelSess(btn) {
@@ -1014,6 +1410,10 @@ function cancelSess(btn) {
   btn.style.display = 'none';
   const restore = item.querySelector('.restore-btn');
   if (restore) restore.style.display = 'flex';
+  ambassadors[0].cancelled = true;
+  ambassadors[0].status = 'Session cancelled';
+  ambassadors[0].dot = 'dot-gr';
+  updatePlayerCancelled(0, true);
   showToast('Session cancelled — players will see this. ❌');
 }
  
@@ -1027,7 +1427,36 @@ function restoreSess(btn) {
   btn.style.display = 'none';
   const cancelBtn = item.querySelector('.cancel-sess-btn');
   if (cancelBtn) cancelBtn.style.display = 'flex';
+  ambassadors[0].cancelled = false;
+  ambassadors[0].status = 'At the park right now';
+  ambassadors[0].dot = 'dot-g';
+  updatePlayerCancelled(0, false);
   showToast('Session restored! Players can see it again. ✓');
+}
+ 
+function updatePlayerCancelled(idx, isCancelled) {
+  const cards = document.querySelectorAll('#cards-container .a-card');
+  if (!cards[idx]) return;
+  const card = cards[idx];
+  const statusDiv = card.querySelector('.status');
+  const dot = card.querySelector('.dot');
+  const stripe = card.querySelector('.a-stripe');
+  const hotBadge = card.querySelector('.hot-badge');
+  if (isCancelled) {
+    card.classList.remove('hot');
+    card.style.opacity = '0.6';
+    if (stripe) stripe.style.background = 'var(--red)';
+    if (dot) dot.className = 'dot dot-gr';
+    if (statusDiv) statusDiv.innerHTML = '<div class="dot" style="background:var(--red);width:7px;height:7px;border-radius:50%;flex-shrink:0;"></div><span style="color:var(--red);">Session cancelled</span>';
+    if (hotBadge) { hotBadge.textContent = 'Cancelled'; hotBadge.style.background = 'var(--red)'; }
+  } else {
+    card.style.opacity = '1';
+    if (stripe) stripe.style.background = 'var(--green)';
+    if (dot) dot.className = 'dot dot-g';
+    if (statusDiv) statusDiv.innerHTML = '<div class="dot dot-g"></div>Live now · here until 7pm';
+    if (hotBadge) { hotBadge.textContent = 'Live'; hotBadge.style.background = 'var(--green)'; }
+    card.classList.add('hot');
+  }
 }
  
 function addAmbPaddle() {
@@ -1121,6 +1550,307 @@ function previewPhoto(input) {
   }
 }
  
+const savedAmbassadors = JSON.parse(localStorage.getItem('swingby-saved') || '[]');
+const interestedSet = new Set(JSON.parse(localStorage.getItem('swingby-interested') || '[]'));
+ 
+ 
+function togglePanelInterested(btn, sessionKey, ambassadorName) {
+  const stored = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+  if (stored[sessionKey]) {
+    delete stored[sessionKey];
+    btn.textContent = '👋 Interested';
+    btn.style.background = 'var(--gray)';
+    btn.style.color = 'var(--muted)';
+    btn.style.borderColor = 'var(--gray2)';
+    showToast('Removed your interest.');
+  } else {
+    stored[sessionKey] = true;
+    btn.textContent = '✓ Interested';
+    btn.style.background = 'var(--green-light)';
+    btn.style.color = 'var(--green-dark)';
+    btn.style.borderColor = 'var(--green)';
+    showToast('👋 ' + ambassadorName + ' can see you\'re interested in this session!');
+  }
+  localStorage.setItem('swingby-sched-interested', JSON.stringify(stored));
+  // Also sync schedule screen buttons
+  document.querySelectorAll('.s-interested-btn').forEach(b => {
+    const key = b.getAttribute('onclick').match(/'([^']+)'/)?.[1];
+    if (key === sessionKey) {
+      if (stored[sessionKey]) { b.textContent = '✓ Interested!'; b.classList.add('active'); }
+      else { b.textContent = '👋 Interested'; b.classList.remove('active'); }
+    }
+  });
+}
+ 
+function toggleScheduleInterested(btn, sessionKey) {
+  const stored = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+  if (stored[sessionKey]) {
+    delete stored[sessionKey];
+    btn.textContent = '👋 Interested';
+    btn.classList.remove('active');
+    showToast('Removed your interest.');
+  } else {
+    stored[sessionKey] = true;
+    btn.textContent = '✓ Interested!';
+    btn.classList.add('active');
+    // Update ambassador dashboard for kevin sessions
+    if (sessionKey.startsWith('kevin')) {
+      updateAmbFutureInterested(sessionKey, Object.keys(stored).filter(k => k.startsWith('kevin')).length);
+    }
+    showToast('Nice! The ambassador can see you\'re interested in this session. 👋');
+  }
+  localStorage.setItem('swingby-sched-interested', JSON.stringify(stored));
+}
+ 
+function updateAmbFutureInterested(key, count) {
+  const boxes = document.querySelectorAll('#ap-home .amb-card [style*="font-weight:700;font-size:14px"]');
+  boxes.forEach(box => {
+    const parent = box.closest('[style*="border-radius:var(--radius-sm)"]');
+    if (!parent) return;
+    const sub = parent.querySelector('[style*="font-size:12px"]');
+    if (sub && sub.textContent.includes('Wed') && key.includes('wed')) {
+      box.textContent = count + (count === 1 ? ' person' : ' people') + ' interested';
+      const numEl = parent.querySelector('[style*="font-size:16px"]');
+      if (numEl) numEl.textContent = count;
+    }
+    if (sub && sub.textContent.includes('Sat') && key.includes('sat')) {
+      box.textContent = count + (count === 1 ? ' person' : ' people') + ' interested';
+      const numEl = parent.querySelector('[style*="font-size:16px"]');
+      if (numEl) numEl.textContent = count;
+    }
+  });
+}
+ 
+function toggleInterested(idx) {
+  const btn = document.getElementById('interested-btn-' + idx);
+  const countEl = document.getElementById('interested-count-' + idx);
+  if (!btn || !countEl) return;
+  let count = parseInt(countEl.textContent);
+  if (interestedSet.has(idx)) {
+    interestedSet.delete(idx);
+    count = Math.max(0, count - 1);
+    btn.textContent = "I'm Interested";
+    btn.style.background = 'var(--green)';
+    showToast('Removed your interest.');
+  } else {
+    interestedSet.add(idx);
+    count++;
+    btn.textContent = '✓ Interested!';
+    btn.style.background = 'var(--green-dark)';
+    showToast('Nice! The ambassador can see you\'re interested. 👋');
+  }
+  countEl.textContent = count;
+  localStorage.setItem('swingby-interested', JSON.stringify([...interestedSet]));
+  updateAmbDashboardInterested(idx, count);
+  // Update card count on player home
+  const cardCount = document.getElementById('card-int-count-' + idx);
+  if (cardCount) cardCount.textContent = count;
+}
+ 
+function updateAmbDashboardInterested(idx, count) {
+  // Update stat card
+  const statCards = document.querySelectorAll('.stat-card');
+  statCards.forEach(card => {
+    if (card.querySelector('.stat-lbl') && card.querySelector('.stat-lbl').textContent === 'Interested today') {
+      const total = [...interestedSet].length;
+      card.querySelector('.stat-val').textContent = total > 0 ? total * 3 + 5 : 8;
+    }
+  });
+ 
+  // Update interested section on dashboard
+  if (idx === 0) {
+    const box = document.getElementById('amb-sess-today');
+    const txt = document.getElementById('amb-interested-text');
+    const num = document.getElementById('amb-interested-num');
+    if (num) { num.textContent = count; num.style.color = count > 0 ? 'var(--green)' : 'var(--muted)'; }
+    if (txt) txt.textContent = count + (count === 1 ? ' person interested' : ' people interested');
+    if (box) {
+      box.style.background = count > 0 ? 'var(--green-light)' : 'var(--gray)';
+      box.style.border = count > 0 ? '1.5px solid var(--green)' : '1.5px solid var(--gray2)';
+    }
+    // Update home page today count
+    const homeTodayNum = document.getElementById('home-today-num');
+    if (homeTodayNum) { homeTodayNum.textContent = count; homeTodayNum.style.color = count > 0 ? 'var(--green)' : 'var(--muted)'; }
+    const checkinNote = document.getElementById('checkin-time');
+    if (checkinNote && isCheckedIn) {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      checkinNote.textContent = 'Checked in at ' + timeStr + ' · ' + count + ' player' + (count !== 1 ? 's' : '') + ' interested';
+    }
+  }
+}
+ 
+ 
+ 
+function saveAmbassador(idx, name, initials, color, brand, park) {
+  const existing = savedAmbassadors.findIndex(a => a.idx === idx);
+  if (existing >= 0) {
+    savedAmbassadors.splice(existing, 1);
+    showToast(name + ' removed from saved.');
+  } else {
+    savedAmbassadors.push({idx, name, initials, color, brand, park});
+    showToast(name + ' saved! View in Saved tab. 🔖');
+  }
+  localStorage.setItem('swingby-saved', JSON.stringify(savedAmbassadors));
+  renderSaved();
+// Restore card interested counts from localStorage
+const _si = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+const _ii = JSON.parse(localStorage.getItem('swingby-interested') || '[]');
+const _iiSet = new Set(_ii);
+[0,1,2,3].forEach(function(idx) {
+  const el = document.getElementById('card-int-count-' + idx);
+  if (!el) return;
+  if (idx === 0) {
+    const future = Object.keys(_si).filter(function(k){ return k.includes('kevin'); }).length;
+    el.textContent = (_iiSet.has(0) ? 1 : 0) + future;
+  } else if (idx === 1) {
+    el.textContent = _iiSet.has(1) ? 1 : 0;
+  } else if (idx === 2) {
+    el.textContent = _iiSet.has(2) ? 1 : 0;
+  } else if (idx === 3) {
+    const future = Object.keys(_si).filter(function(k){ return k.includes('jordan'); }).length;
+    el.textContent = (_iiSet.has(3) ? 1 : 0) + future;
+  }
+});
+// Restore home page session counts
+(function() {
+  var si = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+  var ii = JSON.parse(localStorage.getItem('swingby-interested') || '[]');
+  var wedC = Object.keys(si).filter(function(k){ return k.includes('wed'); }).length;
+  var satC = Object.keys(si).filter(function(k){ return k.includes('sat'); }).length;
+  var todC = ii.indexOf(0) >= 0 ? 1 : 0;
+  var hw = document.getElementById('home-wed-num');
+  var hs = document.getElementById('home-sat-num');
+  var ht = document.getElementById('home-today-num');
+  if (hw) { hw.textContent = wedC; if (wedC > 0) hw.style.color = 'var(--green)'; }
+  if (hs) { hs.textContent = satC; if (satC > 0) hs.style.color = 'var(--green)'; }
+  if (ht) { ht.textContent = todC; if (todC > 0) ht.style.color = 'var(--green)'; }
+})();
+ 
+// Restore schedule interested buttons
+const schedInterested = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+document.querySelectorAll('.s-interested-btn').forEach(btn => {
+  const key = btn.getAttribute('onclick').match(/'([^']+)'\)/)?.[1];
+  if (key && schedInterested[key]) {
+    btn.textContent = '✓ Interested!';
+    btn.classList.add('active');
+  }
+});
+}
+ 
+function renderSaved() {
+  const container = document.getElementById('saved-list');
+  if (!container) return;
+  if (savedAmbassadors.length === 0) {
+    container.innerHTML = `<div class="empty">
+      <div class="empty-icon">🔖</div>
+      <div class="empty-title">Nothing saved yet</div>
+      <div class="empty-sub">Tap Save on any ambassador profile to bookmark them for later</div>
+      <button class="empty-btn" onclick="showPScreen('explore')">Find Ambassadors →</button>
+    </div>`;
+  } else {
+    container.innerHTML = savedAmbassadors.map(a => `
+      <div class="a-card" onclick="openPanel(${a.idx})" style="margin-top:12px;">
+        <div class="a-stripe" style="background:${a.color}"></div>
+        <div class="a-body">
+          <div class="a-top">
+            <div class="av" style="background:${a.color};">${a.initials}</div>
+            <div class="a-info">
+              <div class="a-name">${a.name}</div>
+              <div class="a-meta">${a.brand} Ambassador</div>
+              <div class="a-loc">📍 ${a.park}</div>
+            </div>
+          </div>
+          <div class="a-foot">
+            
+            <button class="cta cta-light" onclick="event.stopPropagation();saveAmbassador(${a.idx},'${a.name}','${a.initials}','${a.color}','${a.brand}','${a.park}')">Remove</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+ 
+const noShowReports = JSON.parse(localStorage.getItem('swingby-noshows') || '{}');
+let isCheckedIn = false;
+ 
+function checkIn() {
+  isCheckedIn = true;
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  document.getElementById('not-checked-in').style.display = 'none';
+  document.getElementById('checked-in').style.display = 'block';
+  document.getElementById('checkin-time').textContent = 'Checked in at ' + timeStr + ' · Players can see you on the map';
+  const tag = document.getElementById('home-sess-tag');
+  if (tag) { tag.textContent = 'Live'; tag.style.background = 'var(--green)'; }
+  updatePlayerView(0, true);
+  showToast('You\'re live! Players near Hayward can find you now. ⚡');
+}
+ 
+function showLeaveConfirm() {
+  document.getElementById('leave-confirm').style.display = 'block';
+}
+ 
+function hideLeaveConfirm() {
+  document.getElementById('leave-confirm').style.display = 'none';
+}
+ 
+function checkOut() {
+  hideLeaveConfirm();
+  isCheckedIn = false;
+  document.getElementById('checked-in').style.display = 'none';
+  document.getElementById('not-checked-in').style.display = 'block';
+  const tag = document.getElementById('home-sess-tag');
+  if (tag) { tag.textContent = 'Not Live'; tag.style.background = 'var(--muted)'; }
+  updatePlayerView(0, false);
+  showToast('You\'re now offline. See you next time! 👋');
+}
+ 
+function updatePlayerView(idx, isLive) {
+  const cards = document.querySelectorAll('#cards-container .a-card');
+  if (!cards[idx]) return;
+  const card = cards[idx];
+  const statusDiv = card.querySelector('.status');
+  const dot = card.querySelector('.dot');
+  const stripe = card.querySelector('.a-stripe');
+  const hotBadge = card.querySelector('.hot-badge');
+  if (isLive) {
+    card.classList.add('hot');
+    if (stripe) stripe.style.background = 'var(--green)';
+    if (dot) { dot.className = 'dot dot-g'; }
+    if (statusDiv) statusDiv.innerHTML = '<div class="dot dot-g"></div>Live now · just checked in';
+    if (hotBadge) hotBadge.style.display = 'inline-block';
+    ambassadors[idx].live = true;
+    ambassadors[idx].status = 'Just checked in — at the park now';
+  } else {
+    card.classList.remove('hot');
+    if (stripe) stripe.style.background = 'var(--gray2)';
+    if (dot) { dot.className = 'dot dot-gr'; }
+    if (statusDiv) statusDiv.innerHTML = '<div class="dot dot-gr"></div>Offline — checked out';
+    if (hotBadge) hotBadge.style.display = 'none';
+    ambassadors[idx].live = false;
+    ambassadors[idx].status = 'Offline — checked out';
+  }
+}
+ 
+function reportNoShow(idx, name) {
+  const key = idx + '-' + new Date().toDateString();
+  if (noShowReports[key]) {
+    showToast('You already reported this session.');
+    return;
+  }
+  
+  noShowReports[key] = true;
+  localStorage.setItem('swingby-noshows', JSON.stringify(noShowReports));
+  const reports = Object.keys(noShowReports).filter(k => k.startsWith(idx + '-')).length;
+  if (reports >= 3) {
+    showToast('Thanks — this ambassador has been flagged for review by Swingby. ⚠️');
+  } else {
+    showToast('Thanks for the report. We take this seriously. (' + reports + '/3 before review)');
+  }
+  closePanel();
+}
+ 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
@@ -1161,6 +1891,50 @@ document.querySelectorAll('.brand-pill').forEach(p => {
   p.addEventListener('click', function() { this.classList.toggle('on'); });
 });
 document.getElementById('new-paddle').addEventListener('keypress', e => { if(e.key==='Enter') addAmbPaddle(); });
+renderSaved();
+// Restore card interested counts from localStorage
+const _si = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+const _ii = JSON.parse(localStorage.getItem('swingby-interested') || '[]');
+const _iiSet = new Set(_ii);
+[0,1,2,3].forEach(function(idx) {
+  const el = document.getElementById('card-int-count-' + idx);
+  if (!el) return;
+  if (idx === 0) {
+    const future = Object.keys(_si).filter(function(k){ return k.includes('kevin'); }).length;
+    el.textContent = (_iiSet.has(0) ? 1 : 0) + future;
+  } else if (idx === 1) {
+    el.textContent = _iiSet.has(1) ? 1 : 0;
+  } else if (idx === 2) {
+    el.textContent = _iiSet.has(2) ? 1 : 0;
+  } else if (idx === 3) {
+    const future = Object.keys(_si).filter(function(k){ return k.includes('jordan'); }).length;
+    el.textContent = (_iiSet.has(3) ? 1 : 0) + future;
+  }
+});
+// Restore home page session counts
+(function() {
+  var si = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+  var ii = JSON.parse(localStorage.getItem('swingby-interested') || '[]');
+  var wedC = Object.keys(si).filter(function(k){ return k.includes('wed'); }).length;
+  var satC = Object.keys(si).filter(function(k){ return k.includes('sat'); }).length;
+  var todC = ii.indexOf(0) >= 0 ? 1 : 0;
+  var hw = document.getElementById('home-wed-num');
+  var hs = document.getElementById('home-sat-num');
+  var ht = document.getElementById('home-today-num');
+  if (hw) { hw.textContent = wedC; if (wedC > 0) hw.style.color = 'var(--green)'; }
+  if (hs) { hs.textContent = satC; if (satC > 0) hs.style.color = 'var(--green)'; }
+  if (ht) { ht.textContent = todC; if (todC > 0) ht.style.color = 'var(--green)'; }
+})();
+ 
+// Restore schedule interested buttons
+const schedInterested = JSON.parse(localStorage.getItem('swingby-sched-interested') || '{}');
+document.querySelectorAll('.s-interested-btn').forEach(btn => {
+  const key = btn.getAttribute('onclick').match(/'([^']+)'\)/)?.[1];
+  if (key && schedInterested[key]) {
+    btn.textContent = '✓ Interested!';
+    btn.classList.add('active');
+  }
+});
  
 const radiusValues = ['5 mi', '10 mi', '25 mi', '50 mi'];
 function updateRadius(val) {
